@@ -1,0 +1,11 @@
+The simulation cannot be submitted automatically, but nothing else needs to be changed. The scripts will take care of everything by themselves.
+The following caution should be considered unless something went wrong.
+
+If one simulation was killed, delete the output folder corresponding to the simulation job number to rerun it.
+If one needed to keep the data related to the killed job, log file and sim.job.restart.tcl file will need to be updated for the new simulation. "sim3.log"
+has to be changed to sim3_"simulation job Number".log
+
+For submmiting, the first job use regular slurm command, but for the other jobs dependency, slurm is essential: 
+qsub -W depend=afterany:'last job_ID' sim_ext.pbs
+
+sim.job.restart.tcl file in the main directory must be checked after each simulation for any inconsistency. 

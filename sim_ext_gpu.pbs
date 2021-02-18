@@ -1,0 +1,46 @@
+#!/bin/bash
+
+#SBATCH -J 2JLNN
+#SBATCH -o A.txt
+#SBATCH -e A.err
+
+#SBATCH --nodes=4 
+#SBATCH --cpus-per-task=40
+#SBATCH --time=24:00:00
+#SBATCH  --partition gpu
+#SBATCH --gres=gpu:4
+#SBATCH --mem=512gb
+#SBATCH --exclusive
+ 
+
+cd $SLURM_SUBMIT_DIR
+
+
+jobname=sim_ext
+logfile=${jobname}.log
+
+export CONV_RSH=ssh
+ 
+export NODELIST=nodelist.$SLURM_JOBID
+echo "group main" > $NODELIST
+for n in `echo $SLURM_NODELIST | scontrol show hostnames`; do
+  echo "host $n ++cpus 4" >> $NODELIST # All ARGO nodes have 16 cpus or more
+done
+
+PPN=$(expr $SLURM_CPUS_PER_TASK)
+P="$(($PPN * $SLURM_NNODES - $SLURM_NNODES))"
+PPN="$(($PPN  - 1))"
+echo $PPN
+echo $P
+echo $NODELIST
+echo $SLURM_NNODES
+let rep_num=$rep_num-1
+
+
+
+run=$(awk  'NR==1{print $3}' sim.job.restart.tcl)
+output=$(printf 'output_%03d' $run)
+mkdir -p $output/{0..167}
+mkdir $output/dat
+
+charmrun  ~/bin/namd2  ++processPerSocket 18 ++ppn 1  +replicas 144 +isomalloc_sync +idlepoll +CmiSpinOnIdle +setcpuaffinity $jobname.conf +stdout $output/%d/job$run.%d.log >& $logfile

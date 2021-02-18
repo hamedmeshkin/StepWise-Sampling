@@ -1,0 +1,30 @@
+#!/bin/bash
+
+#SBATCH -J 4D1B
+#SBATCH -p general
+#SBATCH -o A.txt
+#SBATCH -e A.err
+#SBATCH --ntasks-per-node=48
+#SBATCH --nodes=144
+#SBATCH --ntasks=144
+# #SBATCH --cpus-per-task=48
+#SBATCH --time=72:00:00
+#SBATCH -o e.o/A.o
+#SBATCH -e e.o/A.e
+ 
+
+
+cd $SLURM_SUBMIT_DIR
+
+
+jobname=sim_ext
+logfile=${jobname}.log
+
+
+
+run=$(awk  'NR==1{print $3}' sim.job.restart.tcl)
+output=$(printf 'output_%03d' $run)
+mkdir -p $output/{0..167}
+mkdir $output/dat
+
+srun -n 144 namd2_cray ++ppn 47 +setcpuaffinity +CmiSpinOnIdle +isomalloc_sync +replicas 144 $jobname.conf +stdout $output/%d/job$run.%d.log >& $logfile
