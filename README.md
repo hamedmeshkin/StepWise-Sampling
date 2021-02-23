@@ -8,3 +8,6 @@ Stepwise Transition is an all atom umbrella sampling hamiltonian replica-exchang
 5) sim_bace.conf which is the configuration file, runs the Main_Subcodes/Main.tcl. The Main.tcl file reads all the initial values of each step transition. Therefore, based on each replica, it decides the system with what window and condition needs to be run.  
 6) inside the Main_Subcodes folder, there are 8 other codes as 8 different transition steps which have all the essential commands that measures the condition of each transition. (See G358 for more detail).
 7) initial conditions for each step transition are in the folder input.
+
+
+![alt text](https://github.com/hamedmeshkin/StepWise-Transition-Model/blob/main/schematic%20diagram%20of%20the%20codes.png?raw=true)
