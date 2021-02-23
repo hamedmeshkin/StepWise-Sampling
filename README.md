@@ -1,7 +1,7 @@
 # StepWise-Sampling
 Stepwise Transition is an all atom umbrella sampling hamiltonian replica-exchange simulation on transmembrane protein MHP1 that consists of 8 transition steps. All steps cause the system go through a transition from state A to state B. Here, the target is a transmembrane protein name as MHP1. The sampling uses the umbrella windows from the outward-facing open (OF) state to the Outward-facing occluded (OC) state.
 
-1) The schematics of all the codes are shown by a picture, Schematic_diagram_of_the_codes.png
+1) The schematics of all the codes are shown by the picture below.
 2) NAMD2 runs the Umbrella sampling simulations along with replica exchange for the targeted system.
 3) Along with NAMD2, three other files sequentially are called after each other: 1) sim.conf 2) replica.namd 3) sim_base.conf.
 4) replica.namd, reads all the initial coordinates form the initial folder too.
